@@ -346,7 +346,7 @@ const Dashboard: React.FC = () => {
                                                 {ward.name}
                                             </p>
                                             <p className={`text-2xl md:text-3xl font-bold ${getAmountColor()}`}>
-                                                ₹{ward.amount.toLocaleString()}
+                                                {ward.amount} packs
                                             </p>
                                         </div>
 

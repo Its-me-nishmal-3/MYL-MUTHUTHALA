@@ -136,7 +136,7 @@ router.get('/stats', statsLimiter, async (req, res) => {
 
         const wardStats = await Payment.aggregate([
             { $match: { status: 'success' } },
-            { $group: { _id: '$ward', total: { $sum: '$amount' } } }
+            { $group: { _id: '$ward', total: { $sum: '$quantity' } } }
         ]);
 
         const wardWise: Record<string, number> = {};
