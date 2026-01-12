@@ -3,6 +3,7 @@ import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import Payment from '../models/Payment';
 import { io } from '../server';
+import { paymentLimiter, statsLimiter } from '../middleware/rateLimiter';
 
 const router = express.Router();
 
@@ -11,8 +12,8 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'test_key_secret'
 });
 
-// Create Order
-router.post('/create-order', async (req, res) => {
+// Create Order (rate limited)
+router.post('/create-order', paymentLimiter, async (req, res) => {
     try {
         const { quantity = 1, name, mobile, ward } = req.body;
         const amount = 350 * quantity;
@@ -52,8 +53,8 @@ router.post('/create-order', async (req, res) => {
     }
 });
 
-// Verify Payment
-router.post('/verify', async (req, res) => {
+// Verify Payment (rate limited)
+router.post('/verify', paymentLimiter, async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
@@ -96,8 +97,8 @@ router.post('/verify', async (req, res) => {
     }
 });
 
-// Payment Failed Webhook/Endpoint
-router.post('/payment-failed', async (req, res) => {
+// Payment Failed Webhook/Endpoint (rate limited)
+router.post('/payment-failed', paymentLimiter, async (req, res) => {
     try {
         const { order_id, reason, payment_id } = req.body;
 
@@ -119,8 +120,8 @@ router.post('/payment-failed', async (req, res) => {
     }
 });
 
-// Get Stats
-router.get('/stats', async (req, res) => {
+// Get Stats (rate limited to prevent scraping)
+router.get('/stats', statsLimiter, async (req, res) => {
     try {
         const totalAmount = await Payment.aggregate([
             { $match: { status: 'success' } },
@@ -154,9 +155,8 @@ router.get('/stats', async (req, res) => {
     }
 });
 
-// Get History (Limit 50)
-// Get History (Paginated)
-router.get('/history', async (req, res) => {
+// Get History (Paginated, rate limited)
+router.get('/history', statsLimiter, async (req, res) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;

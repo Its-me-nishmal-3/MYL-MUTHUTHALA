@@ -1,14 +1,15 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import Payment from '../models/Payment';
+import { adminLoginLimiter, statsLimiter } from '../middleware/rateLimiter';
 
 const router = express.Router();
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
-// Admin Login
-router.post('/login', (req, res) => {
+// Admin Login (strict rate limiting to prevent brute force)
+router.post('/login', adminLoginLimiter, (req, res) => {
     const { username, password } = req.body;
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' });
@@ -31,8 +32,8 @@ const verifyToken = (req: any, res: any, next: any) => {
     return next();
 };
 
-// Analytics Endpoint
-router.get('/analytics', verifyToken, async (req, res) => {
+// Analytics Endpoint (rate limited)
+router.get('/analytics', verifyToken, statsLimiter, async (req, res) => {
     try {
         // 1. Overall Stats
         const overallStats = await Payment.aggregate([
@@ -94,8 +95,8 @@ router.get('/analytics', verifyToken, async (req, res) => {
     }
 });
 
-// Get All Payments with Filters
-router.get('/payments', verifyToken, async (req, res) => {
+// Get All Payments with Filters (rate limited)
+router.get('/payments', verifyToken, statsLimiter, async (req, res) => {
     try {
         const { search, ward } = req.query;
         const query: any = {};

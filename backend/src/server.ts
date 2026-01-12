@@ -5,15 +5,22 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import { generalLimiter } from './middleware/rateLimiter';
 
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 
+// Trust proxy (for accurate IP tracking behind reverse proxies like Render)
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Apply general rate limiter to all routes
+app.use(generalLimiter);
 
 // Socket.IO Setup
 const io = new Server(server, {
