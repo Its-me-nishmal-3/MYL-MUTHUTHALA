@@ -18,9 +18,8 @@ import banner7 from '../assets/banner_7.jpg';
 const SOCKET_URL = 'https://myl-muthuthala.onrender.com';
 
 const UNIT_NAMES = [
-    'ATTASSERY', 'AMBALAMPADAM', 'THOTTARA', 'KARIPAMANNA',
-    'PEZHUMATTA', 'KULUKKILIYAD', 'KARIMPUZHA', 'POMBRA',
-    'KOOTTILAKKADAV', 'KOLLAMKODE', 'VAKKADAPURAM', 'OTHERS'
+    'Vadakkumuri', 'Karakkuth', 'Muthuthala', 'Parakkad', 'Kozhikkottiri',
+    'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
 ];
 
 const BANNERS = [banner1, banner2, banner3, banner4, banner5, banner6, banner7];
@@ -90,7 +89,7 @@ const Dashboard: React.FC = () => {
                         <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 via-green-600 to-emerald-600 drop-shadow-lg">
                             MYL MUTHUTHALA
                         </h1>
-                        <p className="text-gray-600 text-xs md:text-sm font-medium">ഈത്തപ്പഴ ചലഞ്ച് 2026</p>
+                        <p className="text-gray-600 text-xs md:text-sm font-medium">EETHAPPAZHA BIG SALE 2026</p>
                     </div>
                     <div className="flex gap-3 md:gap-4 items-center">
                         <button
@@ -215,7 +214,7 @@ const Dashboard: React.FC = () => {
                                                     വിദ്യാർത്ഥികളുടെ അവകാശങ്ങൾ സംരക്ഷിക്കുകയും സമൂഹത്തിന്റെ പുരോഗതിക്കായി സേവനപരമായ ഇടപെടലുകളും നടത്തി കഴിഞ്ഞ കാലങ്ങളിൽ സാമൂഹിക, വിദ്യാഭ്യാസ, സാംസ്കാരിക മേഖലകളിൽ MYL MUTHUTHALA കമ്മിറ്റിക്ക് നമ്മുടെ നാടിനായി ഒരുപാട് പ്രവർത്തനങ്ങൾ കാഴ്ചവെക്കാൻ സാധിച്ചിട്ടുണ്ട്.
                                                 </p>
                                                 <p className="font-semibold text-teal-700 hover:text-teal-800 transition-colors bg-teal-50 border-l-4 border-teal-600 pl-4 py-2 rounded-r-lg">
-                                                    തുടർന്നുള്ള നമ്മുടെ പ്രവർത്തനങ്ങൾക്കും പ്രയത്നങ്ങൾക്കും ശക്തിപകരാൻ വേണ്ടിയുള്ള ഒരു ഈത്തപ്പഴ ചലഞ്ചാണിത്.
+                                                    തുടർന്നുള്ള നമ്മുടെ പ്രവർത്തനങ്ങൾക്കും പ്രയത്നങ്ങൾക്കും ശക്തിപകരാൻ വേണ്ടിയുള്ള ഒരു ഈത്തപ്പഴ വൻ വിൽപ്പനയാണിത്.
                                                 </p>
                                                 <p className="hover:text-gray-900 transition-colors">
                                                     നിങ്ങളുടെ പൂർണ്ണ സഹകരണവും പങ്കാളിത്തവും പ്രതീക്ഷിക്കുന്നു.
@@ -276,7 +275,7 @@ const Dashboard: React.FC = () => {
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-1 h-8 bg-gradient-to-b from-teal-600 to-green-600 rounded-full" />
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-                            Ward Wise Collection
+                            Unit Wise Collection
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

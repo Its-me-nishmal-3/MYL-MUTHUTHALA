@@ -35,8 +35,8 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
                 key: "rzp_live_S0sherYlhwj0be",
                 amount: order.amount,
                 currency: "INR",
-                name: "MYL MUTHUTHALA ഈത്തപ്പഴ ചലഞ്ച്",
-                description: `MYL MUTHUTHALA dates challenge 2026`,
+                name: "MYL MUTHUTHALA EETHAPPAZHA BIG SALE",
+                description: `MYL MUTHUTHALA EETHAPPAZHA BIG SALE 2026`,
                 order_id: order.id,
                 handler: async function (response: any) {
                     // 3. Verify Payment
@@ -153,14 +153,13 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
                             onChange={(e) => setWard(e.target.value)}
                             className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
                         >
-                            <option value="SELECT YOUR WARD" disabled>
-                                SELECT YOUR WARD
+                            <option value="SELECT YOUR UNIT" disabled>
+                                SELECT YOUR UNIT
                             </option>
 
                             {[
-                                'ATTASSERY', 'AMBALAMPADAM', 'THOTTARA', 'KARIPAMANNA',
-                                'PEZHUMATTA', 'KULUKKILIYAD', 'KARIMPUZHA', 'POMBRA',
-                                'KOOTTILAKKADAV', 'KOLLAMKODE', 'VAKKADAPURAM', 'OTHERS'
+                                'Vadakkumuri', 'Karakkuth', 'Muthuthala', 'Parakkad', 'Kozhikkottiri',
+                                'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
                             ].map((unit, i) => (
                                 <option key={i} value={unit} className="bg-white text-gray-900">
                                     {unit}

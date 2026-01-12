@@ -192,7 +192,7 @@ const AdminDashboard: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Ward Performance */}
                         <div className="glass-panel p-6">
-                            <h3 className="text-lg font-bold mb-6">Ward Performance</h3>
+                            <h3 className="text-lg font-bold mb-6">Unit Performance</h3>
                             <div className="h-80 w-full">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={analytics.wardStats} layout="vertical" margin={{ left: 20 }}>
@@ -253,11 +253,10 @@ const AdminDashboard: React.FC = () => {
                             onChange={(e) => setWardFilter(e.target.value)}
                             className="glass-input w-full bg-[#1e293b] text-white"
                         >
-                            <option value="All" className="bg-[#1e293b] text-white">All Wards</option>
+                            <option value="All" className="bg-[#1e293b] text-white">All Units</option>
                             {[
-                                'ATTASSERY', 'AMBALAMPADAM', 'THOTTARA', 'KARIPAMANNA',
-                                'PEZHUMATTA', 'KULUKKILIYAD', 'KARIMPUZHA', 'POMBRA',
-                                'KOOTTILAKKADAV', 'KOLLAMKODE', 'VAKKADAPURAM', 'OTHERS'
+                                'Vadakkumuri', 'Karakkuth', 'Muthuthala', 'Parakkad', 'Kozhikkottiri',
+                                'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
                             ].map((ward, i) => (
                                 <option key={i} value={ward} className="bg-[#1e293b] text-white">{ward}</option>
                             ))}
@@ -273,7 +272,7 @@ const AdminDashboard: React.FC = () => {
                                         <th className="p-4">Date</th>
                                         <th className="p-4">Name</th>
                                         <th className="p-4">Mobile</th>
-                                        <th className="p-4">Ward</th>
+                                        <th className="p-4">Unit</th>
                                         <th className="p-4">Qty</th>
                                         <th className="p-4">Amount</th>
                                         <th className="p-4">Status</th>

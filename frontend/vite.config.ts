@@ -11,9 +11,9 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'MYL MUTHUTHALA Dates Challenge',
+        name: 'MYL MUTHUTHALA EETHAPPAZHA BIG SALE',
         short_name: 'MYL MUTHUTHALA',
-        description: 'Join the MYL MUTHUTHALA Dates Challenge 2026',
+        description: 'MYL MUTHUTHALA EETHAPPAZHA BIG SALE 2026',
         theme_color: '#0d9488',
         icons: [
           {

@@ -267,8 +267,8 @@ const PosterGenerator: React.FC = () => {
             if (navigator.share) {
                 await navigator.share({
                     files: [file],
-                    title: 'MYL MUTHUTHALA Dates Challenge',
-                    text: 'Here is my poster for the MYL MUTHUTHALA Dates Challenge!'
+                    title: 'MYL MUTHUTHALA EETHAPPAZHA BIG SALE',
+                    text: 'Here is my poster for the MYL MUTHUTHALA EETHAPPAZHA BIG SALE!'
                 });
             } else {
                 alert("Sharing is not supported on this device/browser. Please download instead.");
