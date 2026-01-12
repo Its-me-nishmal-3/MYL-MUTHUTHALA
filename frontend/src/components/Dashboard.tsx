@@ -15,7 +15,7 @@ import banner5 from '../assets/banner_5.jpg';
 import banner6 from '../assets/banner_6.jpg';
 import banner7 from '../assets/banner_7.jpg';
 
-const SOCKET_URL = 'https://msf-karimpuzha.onrender.com';
+const SOCKET_URL = 'https://myl-muthuthala.onrender.com';
 
 const UNIT_NAMES = [
     'ATTASSERY', 'AMBALAMPADAM', 'THOTTARA', 'KARIPAMANNA',

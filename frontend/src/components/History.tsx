@@ -26,7 +26,7 @@ const History: React.FC = () => {
             if (isLoadMore) setIsFetchingMore(true);
 
             // Fetch from backend
-            const res = await fetch(`https://msf-karimpuzha.onrender.com/api/payment/history?page=${pageNum}&limit=10`);
+            const res = await fetch(`https://myl-muthuthala.onrender.com/api/payment/history?page=${pageNum}&limit=10`);
             const data = await res.json();
 
             if (data.payments) {
