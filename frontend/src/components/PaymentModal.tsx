@@ -105,35 +105,35 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
     const decrementQty = () => setQuantity(q => q > 1 ? q - 1 : 1);
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-[#0f172a] border border-white/10 w-full max-w-md rounded-2xl p-6 shadow-2xl relative"
+                className="bg-white border border-teal-100 w-full max-w-md rounded-2xl p-6 shadow-2xl relative"
             >
-                <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
                     <X size={24} />
                 </button>
 
-                <h2 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+                <h2 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-green-600">
                     Make Payment
                 </h2>
 
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Your Name</label>
+                        <label className="block text-gray-700 mb-2 text-sm font-medium">Your Name</label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="glass-input w-full"
+                            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
                             placeholder="Enter your name"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Mobile Number</label>
+                        <label className="block text-gray-700 mb-2 text-sm font-medium">Mobile Number</label>
                         <input
                             type="tel"
                             value={mobile}
@@ -141,17 +141,17 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
                                 const val = e.target.value.replace(/\D/g, '').slice(0, 10);
                                 setMobile(val);
                             }}
-                            className="glass-input w-full"
+                            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
                             placeholder="Enter 10-digit mobile number"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Select Unit</label>
+                        <label className="block text-gray-700 mb-2 text-sm font-medium">Select Unit</label>
                         <select
                             value={ward}
                             onChange={(e) => setWard(e.target.value)}
-                            className="glass-input w-full bg-[#1e293b] text-white"
+                            className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
                         >
                             <option value="SELECT YOUR WARD" disabled>
                                 SELECT YOUR WARD
@@ -162,7 +162,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
                                 'PEZHUMATTA', 'KULUKKILIYAD', 'KARIMPUZHA', 'POMBRA',
                                 'KOOTTILAKKADAV', 'KOLLAMKODE', 'VAKKADAPURAM', 'OTHERS'
                             ].map((unit, i) => (
-                                <option key={i} value={unit} className="bg-[#1e293b] text-white">
+                                <option key={i} value={unit} className="bg-white text-gray-900">
                                     {unit}
                                 </option>
                             ))}
@@ -172,18 +172,18 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
 
                     {/* Quantity Selector */}
                     <div>
-                        <label className="block text-gray-400 mb-2 text-sm">Number of Packs</label>
-                        <div className="flex items-center gap-4 bg-white/5 p-2 rounded-xl border border-white/10 w-fit">
+                        <label className="block text-gray-700 mb-2 text-sm font-medium">Number of Packs</label>
+                        <div className="flex items-center gap-4 bg-teal-50 p-2 rounded-xl border border-teal-200 w-fit">
                             <button
                                 onClick={decrementQty}
-                                className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white"
+                                className="p-2 hover:bg-teal-100 rounded-lg transition-colors text-gray-700"
                             >
                                 <Minus size={20} />
                             </button>
-                            <span className="text-xl font-bold w-8 text-center">{quantity}</span>
+                            <span className="text-xl font-bold w-8 text-center text-gray-900">{quantity}</span>
                             <button
                                 onClick={incrementQty}
-                                className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white"
+                                className="p-2 hover:bg-teal-100 rounded-lg transition-colors text-gray-700"
                             >
                                 <Plus size={20} />
                             </button>
@@ -191,15 +191,15 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
                     </div>
 
                     <div className="pt-4">
-                        <div className="flex justify-between items-center mb-4 text-sm text-gray-400">
+                        <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
                             <span>Total Amount ({quantity} x ₹350)</span>
-                            <span className="text-xl font-bold text-white">₹{350 * quantity}</span>
+                            <span className="text-xl font-bold text-gray-900">₹{350 * quantity}</span>
                         </div>
 
                         <button
                             onClick={handlePayment}
                             disabled={loading}
-                            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white font-bold py-4 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                         >
                             {loading ? 'Processing...' : `Pay ₹${350 * quantity}`}
                         </button>

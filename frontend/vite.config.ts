@@ -14,7 +14,7 @@ export default defineConfig({
         name: 'MYL MUTHUTHALA Dates Challenge',
         short_name: 'MYL MUTHUTHALA',
         description: 'Join the MYL MUTHUTHALA Dates Challenge 2026',
-        theme_color: '#0f172a',
+        theme_color: '#0d9488',
         icons: [
           {
             src: 'pwa-192x192.png',
