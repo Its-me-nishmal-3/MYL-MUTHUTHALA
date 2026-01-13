@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 // Assets
-import mainImage from '../assets/main_program.jpg';
+import mainImage from '../assets/main__.jpg';
 import banner1 from '../assets/banner_1.jpg';
 import banner2 from '../assets/banner_2.jpg';
 import banner3 from '../assets/banner_3.jpg';
