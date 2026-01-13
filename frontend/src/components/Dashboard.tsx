@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 // Assets
-import mainImage from '../assets/main__.jpg';
+import mainImage from '../assets/main__.jpeg';
 import banner1 from '../assets/banner_1.jpg';
 import banner2 from '../assets/banner_2.jpg';
 import banner3 from '../assets/banner_3.jpg';
@@ -208,17 +208,15 @@ const Dashboard: React.FC = () => {
                                         >
                                             <div className="space-y-4 text-gray-700 leading-relaxed text-base md:text-lg font-malayalam">
                                                 <p className="hover:text-gray-900 transition-colors">
-                                                    നമ്മുടെ നാട്ടിലെ സാമൂഹിക-വിദ്യാഭ്യാസ രംഗങ്ങളിൽ സജീവമായി പ്രവർത്തിക്കുന്ന വിദ്യാർത്ഥി സംഘടനയാണല്ലോ എം.എസ്.എഫ്.
+                                                    നമ്മുടെ നാട്ടിലെ സാമൂഹിക സാംസ്‌കാരിക സേവന രംഗത്ത് സജീവമായി പ്രവർത്തിക്കുന്ന സംഘടനയാണ് മുസ്‌ലിം യൂത്ത് ലീഗ്.
                                                 </p>
                                                 <p className="hover:text-gray-600 transition-colors">
-                                                    വിദ്യാർത്ഥികളുടെ അവകാശങ്ങൾ സംരക്ഷിക്കുകയും സമൂഹത്തിന്റെ പുരോഗതിക്കായി സേവനപരമായ ഇടപെടലുകളും നടത്തി കഴിഞ്ഞ കാലങ്ങളിൽ സാമൂഹിക, വിദ്യാഭ്യാസ, സാംസ്കാരിക മേഖലകളിൽ MYL MUTHUTHALA കമ്മിറ്റിക്ക് നമ്മുടെ നാടിനായി ഒരുപാട് പ്രവർത്തനങ്ങൾ കാഴ്ചവെക്കാൻ സാധിച്ചിട്ടുണ്ട്.
+                                                    പൊതുജനങ്ങളുടെ അവകാശങ്ങൾ സംരക്ഷിക്കുന്നതിനും പുരോഗതിക്കും മാതൃകപരമായ ഇടപെടലുകളും സമരങ്ങളും നടത്തി മുസ്‌ലിം യൂത്ത് ലീഗ് മുതുതല പഞ്ചായത്ത്‌ കമ്മിറ്റി അതിന്റെ പ്രയാണം നടത്തികൊണ്ടിരിക്കുകയാണ്.
                                                 </p>
                                                 <p className="font-semibold text-teal-700 hover:text-teal-800 transition-colors bg-teal-50 border-l-4 border-teal-600 pl-4 py-2 rounded-r-lg">
-                                                    തുടർന്നുള്ള നമ്മുടെ പ്രവർത്തനങ്ങൾക്കും പ്രയത്നങ്ങൾക്കും ശക്തിപകരാൻ വേണ്ടിയുള്ള ഒരു ഈത്തപ്പഴ വൻ വിൽപ്പനയാണിത്.
+                                                    തുടർന്നും ഇത്തരം പ്രവർത്തനങ്ങൾക്കും പ്രയത്നങ്ങൾക്കും ശക്തി പകരാൻ  മുസ്‌ലിം യൂത്ത് ലീഗിന്റെ ഈത്തപ്പഴം ബിഗ് സെയിലിൽ പങ്കാളികളാവണമെന്ന് വിനീതമായി അഭ്യർത്ഥിക്കുന്നു
                                                 </p>
-                                                <p className="hover:text-gray-900 transition-colors">
-                                                    നിങ്ങളുടെ പൂർണ്ണ സഹകരണവും പങ്കാളിത്തവും പ്രതീക്ഷിക്കുന്നു.
-                                                </p>
+
                                             </div>
                                         </motion.div>
                                     )}
