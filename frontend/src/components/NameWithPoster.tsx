@@ -31,7 +31,7 @@ const NameWithPoster: React.FC = () => {
 
             canvas.width = 2560;
             canvas.height = 3200;
-            img.src = '/ricipt_thanks_with_name.jpg';
+            img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
                 img.onload = resolve;
@@ -76,7 +76,7 @@ const NameWithPoster: React.FC = () => {
 
             canvas.width = 2560;
             canvas.height = 3200;
-            img.src = '/ricipt_thanks_with_name.jpg';
+            img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
                 img.onload = resolve;
@@ -118,7 +118,7 @@ const NameWithPoster: React.FC = () => {
 
             canvas.width = 2560;
             canvas.height = 3200;
-            img.src = '/ricipt_thanks_with_name.jpg';
+            img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
                 img.onload = resolve;
@@ -201,7 +201,7 @@ const NameWithPoster: React.FC = () => {
                     <div className="relative w-full max-w-lg shadow-2xl rounded-lg overflow-hidden">
                         <div className="relative w-full">
                             <img
-                                src="/ricipt_thanks_with_name.jpg"
+                                src="/recipt.jpeg"
                                 alt="Poster"
                                 className="w-full h-auto block"
                             />

@@ -61,6 +61,28 @@ const getCroppedImg = async (
     });
 };
 
+// Helper function to draw a rounded rectangle path
+const drawRoundedRect = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number
+) => {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.arcTo(x + width, y, x + width, y + radius, radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+    ctx.lineTo(x + radius, y + height);
+    ctx.arcTo(x, y + height, x, y + height - radius, radius);
+    ctx.lineTo(x, y + radius);
+    ctx.arcTo(x, y, x + radius, y, radius);
+    ctx.closePath();
+};
+
 const PosterGenerator: React.FC = () => {
     const navigate = useNavigate();
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -78,13 +100,13 @@ const PosterGenerator: React.FC = () => {
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
 
     // Coordinates configuration
-    // Based on User provided Map from the high-res (2560x3200) original
-    // Photo: 1138,2085,345,1132 (x2, y2, x1, y1) -> x=345, y=1132, w=793, h=953
-    // Name: 476,2173,1322,2247 -> x=476, y=2173, w=846, h=74
+    // Based on new image map for challenge_frame_new.png (1200x1551)
+    // Photo: coords="219,642,583,1077" (left,top,right,bottom) -> x=219, y=642, w=364, h=435
+    // Name: coords="192,1118,711,1182" (left,top,right,bottom) -> x=192, y=1118, w=519, h=64
     const COORDS = {
-        PHOTO: { x: 345, y: 1132, w: 793, h: 953 },
-        NAME: { x: 70, y: 2190, w: 846, h: 74 },
-        TEMPLATE_SRC: '/challange-frame.png'
+        PHOTO: { x: 219, y: 642, w: 364, h: 435 },
+        NAME: { x: -40, y: 1118, w: 519, h: 64 },
+        TEMPLATE_SRC: '/challenge_frame_new.png'
     };
 
     // Load template image on mount
@@ -114,10 +136,8 @@ const PosterGenerator: React.FC = () => {
         canvas.width = templateImage.naturalWidth;
         canvas.height = templateImage.naturalHeight;
 
-        // The coordinates are based on the high-res original (2560x3200).
-        // The loaded template is smaller (819x1024).
-        // We scale coordinates down to fit.
-        const REFERENCE_WIDTH = 2560; // Confirmed via user logs
+        // The coordinates are based on actual image dimensions (1200x1551)
+        const REFERENCE_WIDTH = 1200; // Actual image width
         const scale = canvas.width / REFERENCE_WIDTH;
 
         // console.log("Canvas Size:", canvas.width, canvas.height, "Scale Factor:", scale); 
@@ -141,10 +161,10 @@ const PosterGenerator: React.FC = () => {
                 const w = COORDS.PHOTO.w * scale;
                 const h = COORDS.PHOTO.h * scale;
 
-                // Clip the area
+                // Clip the area with rounded corners (10% border radius)
                 ctx.save();
-                ctx.beginPath();
-                ctx.rect(x, y, w, h);
+                const borderRadius = Math.min(w, h) * 0.10; // 10% of smaller dimension
+                drawRoundedRect(ctx, x, y, w, h, borderRadius);
                 ctx.clip();
 
                 // Since image is ALREADY cropped to aspect ratio, just draw it covering the area for safety
@@ -205,7 +225,7 @@ const PosterGenerator: React.FC = () => {
         // Base size 80 seems appropriate for 2560px width.
         const fontSize = Math.round(40 * scale);
         ctx.font = `bold ${fontSize}px Arial`;
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = '#ffffffff';
         ctx.textAlign = 'start';
         ctx.textBaseline = 'middle';
 

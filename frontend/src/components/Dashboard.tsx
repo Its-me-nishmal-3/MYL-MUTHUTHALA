@@ -7,13 +7,10 @@ import { useNavigate } from 'react-router-dom';
 
 // Assets
 import mainImage from '../assets/main__.jpeg';
-import banner1 from '../assets/banner_1.jpg';
-import banner2 from '../assets/banner_2.jpg';
-import banner3 from '../assets/banner_3.jpg';
-import banner4 from '../assets/banner_4.jpg';
-import banner5 from '../assets/banner_5.jpg';
-import banner6 from '../assets/banner_6.jpg';
-import banner7 from '../assets/banner_7.jpg';
+import banner1 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM.jpeg';
+import banner2 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (1).jpeg';
+import banner3 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (2).jpeg';
+import banner4 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (3).jpeg';
 
 const SOCKET_URL = 'https://myl-muthuthala.onrender.com';
 
@@ -22,7 +19,7 @@ const UNIT_NAMES = [
     'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
 ];
 
-const BANNERS = [banner1, banner2, banner3, banner4, banner5, banner6, banner7];
+const BANNERS = [banner1, banner2, banner3, banner4];
 
 interface Stats {
     totalAmount: number;
@@ -289,36 +286,36 @@ const Dashboard: React.FC = () => {
                                 const isSecond = index === 1 && isActive;
                                 const isThird = index === 2 && isActive;
 
-                                // Professional color scheme
+                                // Clean, minimal color scheme
                                 const getBorderColor = () => {
-                                    if (isFirst) return 'border-amber-400/60';
-                                    if (isSecond) return 'border-slate-300/60';
-                                    if (isThird) return 'border-orange-400/60';
-                                    if (isActive) return 'border-emerald-400/40';
-                                    return 'border-white/10';
+                                    if (isFirst) return 'border-l-4 border-yellow-400';
+                                    if (isSecond) return 'border-l-4 border-blue-400';
+                                    if (isThird) return 'border-l-4 border-pink-400';
+                                    if (isActive) return 'border-l-4 border-teal-400';
+                                    return 'border-l-4 border-gray-200';
                                 };
 
                                 const getBgColor = () => {
-                                    if (isFirst) return 'bg-amber-500/5';
-                                    if (isSecond) return 'bg-slate-300/5';
-                                    if (isThird) return 'bg-orange-500/5';
-                                    if (isActive) return 'bg-emerald-500/5';
-                                    return 'bg-white/0';
+                                    if (isFirst) return 'bg-yellow-50';
+                                    if (isSecond) return 'bg-blue-50';
+                                    if (isThird) return 'bg-pink-50';
+                                    if (isActive) return 'bg-teal-50';
+                                    return 'bg-white';
                                 };
 
                                 const getRankBadge = () => {
-                                    if (isFirst) return { text: '1st', color: 'bg-amber-500/20 text-amber-300 border-amber-400/30' };
-                                    if (isSecond) return { text: '2nd', color: 'bg-slate-400/20 text-slate-200 border-slate-300/30' };
-                                    if (isThird) return { text: '3rd', color: 'bg-orange-500/20 text-orange-300 border-orange-400/30' };
+                                    if (isFirst) return { text: '#1', color: 'bg-yellow-400 text-gray-900' };
+                                    if (isSecond) return { text: '#2', color: 'bg-blue-400 text-white' };
+                                    if (isThird) return { text: '#3', color: 'bg-pink-400 text-white' };
                                     return null;
                                 };
 
                                 const getAmountColor = () => {
-                                    if (isFirst) return 'text-amber-100';
-                                    if (isSecond) return 'text-slate-100';
-                                    if (isThird) return 'text-orange-100';
-                                    if (isActive) return 'text-emerald-100';
-                                    return 'text-gray-600';
+                                    if (isFirst) return 'text-yellow-600';
+                                    if (isSecond) return 'text-blue-600';
+                                    if (isThird) return 'text-pink-600';
+                                    if (isActive) return 'text-teal-600';
+                                    return 'text-gray-400';
                                 };
 
                                 const rankBadge = getRankBadge();
@@ -329,33 +326,29 @@ const Dashboard: React.FC = () => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: index * 0.03, duration: 0.3 }}
-                                        className={`relative p-5 rounded-xl border-2 transition-all duration-300 ${getBorderColor()} ${getBgColor()} hover:bg-teal-50/50`}
+                                        onClick={() => ward.amount > 0 && navigate(`/history?unit=${encodeURIComponent(ward.name)}`)}
+                                        className={`relative p-5 rounded-lg border ${getBorderColor()} ${getBgColor()} ${ward.amount > 0 ? 'cursor-pointer hover:shadow-md hover:-translate-y-1' : 'opacity-50'} transition-all duration-200`}
+                                        title={ward.amount > 0 ? `Click to view ${ward.name} payments` : undefined}
                                     >
                                         {/* Rank Badge */}
                                         {rankBadge && (
-                                            <div className={`absolute -top-2 -right-2 px-2.5 py-0.5 rounded-md text-xs font-bold border ${rankBadge.color}`}>
+                                            <div className={`absolute -top-3 -right-3 w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-lg ${rankBadge.color}`}>
                                                 {rankBadge.text}
                                             </div>
                                         )}
 
                                         {/* Content */}
                                         <div>
-                                            <p className="text-gray-600 text-xs uppercase tracking-wider mb-2 font-semibold truncate" title={ward.name}>
+                                            <p className="text-gray-600 text-xs uppercase tracking-wider mb-3 font-semibold">
                                                 {ward.name}
                                             </p>
-                                            <p className={`text-2xl md:text-3xl font-bold ${getAmountColor()}`}>
-                                                {ward.amount} packs
+                                            <p className={`text-3xl font-bold ${getAmountColor()}`}>
+                                                {ward.amount}
                                             </p>
+                                            <p className="text-xs text-gray-500 mt-1">packs</p>
                                         </div>
 
-                                        {/* Bottom accent line */}
-                                        {isActive && (
-                                            <div className={`absolute bottom-0 left-0 w-full h-0.5 ${isFirst ? 'bg-amber-400/50' :
-                                                isSecond ? 'bg-slate-300/50' :
-                                                    isThird ? 'bg-orange-400/50' :
-                                                        'bg-emerald-400/50'
-                                                }`} />
-                                        )}
+
                                     </motion.div>
                                 );
                             })}

@@ -160,11 +160,18 @@ router.get('/history', statsLimiter, async (req, res) => {
     try {
         const page = parseInt(req.query.page as string) || 1;
         const limit = parseInt(req.query.limit as string) || 10;
+        const ward = req.query.ward as string | undefined;
         const skip = (page - 1) * limit;
 
-        const total = await Payment.countDocuments({ status: 'success' });
+        // Build query filter
+        const filter: any = { status: 'success' };
+        if (ward) {
+            filter.ward = ward;
+        }
 
-        const payments = await Payment.find({ status: 'success' })
+        const total = await Payment.countDocuments(filter);
+
+        const payments = await Payment.find(filter)
             .select('name ward amount quantity paymentId createdAt status') // Exclude mobile, orderId
             .sort({ createdAt: -1 })
             .skip(skip)

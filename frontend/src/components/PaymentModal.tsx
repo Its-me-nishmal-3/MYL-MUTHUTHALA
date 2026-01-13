@@ -10,7 +10,7 @@ interface PaymentModalProps {
 const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
     const [name, setName] = useState('');
     const [mobile, setMobile] = useState('');
-    const [ward, setWard] = useState('SELECT YOUR WARD');
+    const [ward, setWard] = useState('SELECT YOUR UNIT');
     const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
     const handlePayment = async () => {
         if (!name) return alert('Please enter your name');
         if (!mobile || mobile.length < 10) return alert('Please enter a valid mobile number');
-        if (ward === 'SELECT YOUR WARD') return alert('Please select your ward');
+        if (ward === 'SELECT YOUR UNIT') return alert('Please select your unit');
         setLoading(true);
 
         try {

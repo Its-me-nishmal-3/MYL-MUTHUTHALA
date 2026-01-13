@@ -24,11 +24,11 @@ const Receipt: React.FC = () => {
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
-            // Original dimensions
-            canvas.width = 2560;
-            canvas.height = 3200;
+            // Original dimensions (actual image size)
+            canvas.width = 1200;
+            canvas.height = 1550;
 
-            img.src = '/ricipt_thanks_with_name.jpg';
+            img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
                 img.onload = resolve;
@@ -37,23 +37,30 @@ const Receipt: React.FC = () => {
 
             if (ctx) {
                 // Draw background
-                ctx.drawImage(img, 0, 0, 2560, 3200);
+                ctx.drawImage(img, 0, 0, 1200, 1550);
 
                 // Configure text
-                // 3.9% height of 3200 is ~125px. Let's use ~80px font size for high res.
-                ctx.font = 'bold 100px Arial, sans-serif';
                 ctx.fillStyle = '#751d08';
-                ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
 
-                // Coordinates
-                // Left: 11.13% -> 285px
-                // Top: 26.9% -> 861px
-                // Height: 125px. Center Y = 861 + (125/2) = ~923px
-                const x = 285;
-                const y = 923;
+                // Area 1: Name - coords (201,528,802,583)
+                const nameX = 201;
+                const nameY = 528 + ((583 - 528) / 2); // Center vertically
+                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(payment.name.toUpperCase(), nameX, nameY);
 
-                ctx.fillText(payment.name.toUpperCase(), x, y);
+                // Area 2: Order/Quantity - coords (774,765,1115,802) + 10px down
+                const qtyX = 774; // Left edge
+                const qtyY = 765 + ((802 - 765) / 2) + 10;  // Center vertically + 10px down
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(String(payment.quantity || 1), qtyX, qtyY);
+
+                // Area 3: Amount - coords (754,821,1112,855) + 10px down
+                const amtX = 754; // Left edge
+                const amtY = 821 + ((855 - 821) / 2) + 10;  // Center vertically + 10px down
+                ctx.fillText(`₹${payment.amount || (payment.quantity * 350)}`, amtX, amtY);
 
                 // Trigger download
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
@@ -78,24 +85,57 @@ const Receipt: React.FC = () => {
                 {/* Display Container */}
                 <div className="relative w-full">
                     <img
-                        src="/ricipt_thanks_with_name.jpg"
+                        src="/recipt.jpeg"
                         alt="Receipt"
                         className="w-full h-auto block"
+                        useMap="#receipt-map"
                     />
 
+                    {/* Area 1: Name - coords="201,528,802,583" */}
                     <div
                         className="absolute flex items-center overflow-hidden"
                         style={{
-                            top: '26.9%',
-                            left: '11.1%',
-                            width: '45.3%',
-                            height: '3.9%',
+                            left: '16.75%',     // 201/1200 * 100
+                            top: '34.06%',      // 528/1550 * 100
+                            width: '50.08%',    // (802-201)/1200 * 100
+                            height: '3.55%',    // (583-528)/1550 * 100
                             color: '#751d08',
                         }}
                     >
-                        {/* Responsive text: Left aligned */}
-                        <span className="font-bold text-[3.5vw] sm:text-[2.5vw] md:text-xl lg:text-2xl uppercase tracking-wide truncate w-full text-left leading-none pl-2">
+                        <span className="font-bold text-[2.5vw] sm:text-[1.8vw] md:text-sm lg:text-base uppercase tracking-wide truncate w-full text-left leading-none">
                             {payment.name}
+                        </span>
+                    </div>
+
+                    {/* Area 2: Order/Quantity - coords="774,765,1115,802" */}
+                    <div
+                        className="absolute flex items-center overflow-hidden"
+                        style={{
+                            left: '64.5%',      // 774/1200 * 100
+                            top: '50%',         // (765+10)/1550 * 100
+                            width: '28.42%',    // (1115-774)/1200 * 100
+                            height: '2.39%',    // (802-765)/1550 * 100
+                            color: '#000000ff',
+                        }}
+                    >
+                        <span className="font-bold text-[2vw] sm:text-[1.5vw] md:text-xs lg:text-sm text-left leading-none">
+                            {payment.quantity || 1}
+                        </span>
+                    </div>
+
+                    {/* Area 3: Amount - coords="754,821,1112,855" */}
+                    <div
+                        className="absolute flex items-center overflow-hidden"
+                        style={{
+                            left: '62.83%',     // 754/1200 * 100
+                            top: '53.61%',      // (821+10)/1550 * 100
+                            width: '29.83%',    // (1112-754)/1200 * 100
+                            height: '2.19%',    // (855-821)/1550 * 100
+                            color: '#000000ff',
+                        }}
+                    >
+                        <span className="font-bold text-[2vw] sm:text-[1.5vw] md:text-xs lg:text-sm text-left leading-none">
+                            ₹{payment.amount || (payment.quantity * 350)}
                         </span>
                     </div>
                 </div>
@@ -124,22 +164,36 @@ const Receipt: React.FC = () => {
                             const canvas = document.createElement('canvas');
                             const ctx = canvas.getContext('2d');
                             const img = new Image();
-                            canvas.width = 2560;
-                            canvas.height = 3200;
-                            img.src = '/ricipt_thanks_with_name.jpg';
+                            canvas.width = 1200;
+                            canvas.height = 1550;
+                            img.src = '/recipt.jpeg';
                             await new Promise((resolve, reject) => {
                                 img.onload = resolve;
                                 img.onerror = reject;
                             });
                             if (ctx) {
-                                ctx.drawImage(img, 0, 0, 2560, 3200);
-                                ctx.font = 'bold 100px Arial, sans-serif';
+                                ctx.drawImage(img, 0, 0, 1200, 1550);
                                 ctx.fillStyle = '#751d08';
-                                ctx.textAlign = 'left';
                                 ctx.textBaseline = 'middle';
-                                const x = 285;
-                                const y = 923;
-                                ctx.fillText(payment.name.toUpperCase(), x, y);
+
+                                // Area 1: Name
+                                const nameX = 201;
+                                const nameY = 528 + ((583 - 528) / 2);
+                                ctx.font = 'bold 28px Arial, sans-serif';
+                                ctx.textAlign = 'left';
+                                ctx.fillText(payment.name.toUpperCase(), nameX, nameY);
+
+                                // Area 2: Order/Quantity + 10px down
+                                const qtyX = 774; // Left edge
+                                const qtyY = 765 + ((802 - 765) / 2) + 10;
+                                ctx.font = 'bold 24px Arial, sans-serif';
+                                ctx.textAlign = 'left';
+                                ctx.fillText(String(payment.quantity || 1), qtyX, qtyY);
+
+                                // Area 3: Amount + 10px down
+                                const amtX = 754; // Left edge
+                                const amtY = 821 + ((855 - 821) / 2) + 10;
+                                ctx.fillText(`₹${payment.amount || (payment.quantity * 350)}`, amtX, amtY);
 
                                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                                 const blob = await (await fetch(dataUrl)).blob();
