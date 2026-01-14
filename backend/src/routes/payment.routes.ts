@@ -38,7 +38,7 @@ const sendWhatsAppNotification = async (name: string, quantity: number, amount: 
 router.post('/create-order', paymentLimiter, async (req, res) => {
     try {
         const { quantity = 1, name, mobile, ward } = req.body;
-        const amount = 1 * quantity;
+        const amount = 350 * quantity;
 
         const options = {
             amount: amount * 100, // amount in paisa
