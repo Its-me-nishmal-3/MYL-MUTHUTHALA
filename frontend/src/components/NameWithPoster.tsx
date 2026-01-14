@@ -5,32 +5,39 @@ import { Download, Loader2, Share2 } from 'lucide-react';
 const NameWithPoster: React.FC = () => {
     const [searchParams] = useSearchParams();
     const [name, setName] = useState('');
+    const [quantity, setQuantity] = useState(1);
+    const [amount, setAmount] = useState(0);
     const [generated, setGenerated] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
 
     const nameParam = searchParams.get('name');
+    const quantityParam = searchParams.get('quantity');
+    const amountParam = searchParams.get('amount');
     const typeParam = searchParams.get('type');
 
     useEffect(() => {
         if (nameParam) {
             setName(nameParam);
+            setQuantity(quantityParam ? parseInt(quantityParam) : 1);
+            setAmount(amountParam ? parseInt(amountParam) : 350);
             setGenerated(true);
 
             // If type=image, generate and return image only
             if (typeParam === 'image') {
-                generateImageOnly(nameParam);
+                generateImageOnly(nameParam, quantityParam ? parseInt(quantityParam) : 1, amountParam ? parseInt(amountParam) : 350);
             }
         }
-    }, [nameParam, typeParam]);
+    }, [nameParam, quantityParam, amountParam, typeParam]);
 
-    const generateImageOnly = async (userName: string) => {
+    const generateImageOnly = async (userName: string, qty: number, amt: number) => {
         try {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
-            canvas.width = 2560;
-            canvas.height = 3200;
+            // Original dimensions (same as Receipt.tsx)
+            canvas.width = 1200;
+            canvas.height = 1550;
             img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
@@ -39,14 +46,27 @@ const NameWithPoster: React.FC = () => {
             });
 
             if (ctx) {
-                ctx.drawImage(img, 0, 0, 2560, 3200);
-                ctx.font = 'bold 100px Arial, sans-serif';
+                ctx.drawImage(img, 0, 0, 1200, 1550);
                 ctx.fillStyle = '#751d08';
-                ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                const x = 285;
-                const y = 923;
-                ctx.fillText(userName.toUpperCase(), x, y);
+
+                // Area 1: Name
+                const nameX = 201;
+                const nameY = 528 + ((583 - 528) / 2);
+                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(userName.toUpperCase(), nameX, nameY);
+
+                // Area 2: Quantity
+                const qtyX = 774;
+                const qtyY = 765 + ((802 - 765) / 2) + 10;
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.fillText(String(qty), qtyX, qtyY);
+
+                // Area 3: Amount
+                const amtX = 754;
+                const amtY = 821 + ((855 - 821) / 2) + 10;
+                ctx.fillText(`₹${amt}`, amtX, amtY);
 
                 // Convert to blob and replace document
                 canvas.toBlob((blob) => {
@@ -74,8 +94,9 @@ const NameWithPoster: React.FC = () => {
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
-            canvas.width = 2560;
-            canvas.height = 3200;
+            // Original dimensions (same as Receipt.tsx)
+            canvas.width = 1200;
+            canvas.height = 1550;
             img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
@@ -84,14 +105,27 @@ const NameWithPoster: React.FC = () => {
             });
 
             if (ctx) {
-                ctx.drawImage(img, 0, 0, 2560, 3200);
-                ctx.font = 'bold 100px Arial, sans-serif';
+                ctx.drawImage(img, 0, 0, 1200, 1550);
                 ctx.fillStyle = '#751d08';
-                ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                const x = 285;
-                const y = 923;
-                ctx.fillText(name.toUpperCase(), x, y);
+
+                // Area 1: Name
+                const nameX = 201;
+                const nameY = 528 + ((583 - 528) / 2);
+                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(name.toUpperCase(), nameX, nameY);
+
+                // Area 2: Quantity
+                const qtyX = 774;
+                const qtyY = 765 + ((802 - 765) / 2) + 10;
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.fillText(String(quantity), qtyX, qtyY);
+
+                // Area 3: Amount
+                const amtX = 754;
+                const amtY = 821 + ((855 - 821) / 2) + 10;
+                ctx.fillText(`₹${amount}`, amtX, amtY);
 
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 const link = document.createElement('a');
@@ -116,8 +150,9 @@ const NameWithPoster: React.FC = () => {
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
-            canvas.width = 2560;
-            canvas.height = 3200;
+            // Original dimensions (same as Receipt.tsx)
+            canvas.width = 1200;
+            canvas.height = 1550;
             img.src = '/recipt.jpeg';
 
             await new Promise((resolve, reject) => {
@@ -126,14 +161,27 @@ const NameWithPoster: React.FC = () => {
             });
 
             if (ctx) {
-                ctx.drawImage(img, 0, 0, 2560, 3200);
-                ctx.font = 'bold 100px Arial, sans-serif';
+                ctx.drawImage(img, 0, 0, 1200, 1550);
                 ctx.fillStyle = '#751d08';
-                ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                const x = 285;
-                const y = 923;
-                ctx.fillText(name.toUpperCase(), x, y);
+
+                // Area 1: Name
+                const nameX = 201;
+                const nameY = 528 + ((583 - 528) / 2);
+                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText(name.toUpperCase(), nameX, nameY);
+
+                // Area 2: Quantity
+                const qtyX = 774;
+                const qtyY = 765 + ((802 - 765) / 2) + 10;
+                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.fillText(String(quantity), qtyX, qtyY);
+
+                // Area 3: Amount
+                const amtX = 754;
+                const amtY = 821 + ((855 - 821) / 2) + 10;
+                ctx.fillText(`₹${amount}`, amtX, amtY);
 
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                 const blob = await (await fetch(dataUrl)).blob();
@@ -206,18 +254,51 @@ const NameWithPoster: React.FC = () => {
                                 className="w-full h-auto block"
                             />
 
+                            {/* Area 1: Name - coords="201,528,802,583" */}
                             <div
                                 className="absolute flex items-center overflow-hidden"
                                 style={{
-                                    top: '26.9%',
-                                    left: '11.1%',
-                                    width: '45.3%',
-                                    height: '3.9%',
+                                    left: '16.75%',     // 201/1200 * 100
+                                    top: '34.06%',      // 528/1550 * 100
+                                    width: '50.08%',    // (802-201)/1200 * 100
+                                    height: '3.55%',    // (583-528)/1550 * 100
                                     color: '#751d08',
                                 }}
                             >
-                                <span className="font-bold text-[3.5vw] sm:text-[2.5vw] md:text-xl lg:text-2xl uppercase tracking-wide truncate w-full text-left leading-none pl-2">
+                                <span className="font-bold text-[2.5vw] sm:text-[1.8vw] md:text-sm lg:text-base uppercase tracking-wide truncate w-full text-left leading-none">
                                     {name}
+                                </span>
+                            </div>
+
+                            {/* Area 2: Order/Quantity - coords="774,765,1115,802" */}
+                            <div
+                                className="absolute flex items-center overflow-hidden"
+                                style={{
+                                    left: '64.5%',      // 774/1200 * 100
+                                    top: '50%',         // (765+10)/1550 * 100
+                                    width: '28.42%',    // (1115-774)/1200 * 100
+                                    height: '2.39%',    // (802-765)/1550 * 100
+                                    color: '#000000ff',
+                                }}
+                            >
+                                <span className="font-bold text-[2vw] sm:text-[1.5vw] md:text-xs lg:text-sm text-left leading-none">
+                                    {quantity}
+                                </span>
+                            </div>
+
+                            {/* Area 3: Amount - coords="754,821,1112,855" */}
+                            <div
+                                className="absolute flex items-center overflow-hidden"
+                                style={{
+                                    left: '62.83%',     // 754/1200 * 100
+                                    top: '53.61%',      // (821+10)/1550 * 100
+                                    width: '29.83%',    // (1112-754)/1200 * 100
+                                    height: '2.19%',    // (855-821)/1550 * 100
+                                    color: '#000000ff',
+                                }}
+                            >
+                                <span className="font-bold text-[2vw] sm:text-[1.5vw] md:text-xs lg:text-sm text-left leading-none">
+                                    ₹{amount}
                                 </span>
                             </div>
                         </div>
