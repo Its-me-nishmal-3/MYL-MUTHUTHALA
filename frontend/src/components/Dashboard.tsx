@@ -11,6 +11,8 @@ import banner1 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM.jpeg';
 import banner2 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (1).jpeg';
 import banner3 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (2).jpeg';
 import banner4 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (3).jpeg';
+import banner5 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (4) (1).jpeg';
+import banner6 from '../assets/WhatsApp Image 2026-01-13 at 8.39.09 PM (5) (1).jpeg';
 
 const SOCKET_URL = 'https://myl-muthuthala.onrender.com';
 
@@ -19,7 +21,7 @@ const UNIT_NAMES = [
     'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
 ];
 
-const BANNERS = [banner1, banner2, banner3, banner4];
+const BANNERS = [banner5, banner6, banner1, banner2, banner3, banner4];
 
 interface Stats {
     totalAmount: number;
@@ -363,7 +365,7 @@ const Dashboard: React.FC = () => {
                         onClick={() => setShowModal(true)}
                         className="pointer-events-auto bg-gradient-to-r from-teal-600 to-green-600 text-white font-bold text-lg md:text-xl py-4 px-12 rounded-full shadow-2xl shadow-teal-500/40 hover:shadow-teal-500/60 border border-teal-400/30 backdrop-blur-sm flex items-center gap-2"
                     >
-                        Pay Now ₹350
+                        Participate
                     </motion.button>
                 </div>
 
