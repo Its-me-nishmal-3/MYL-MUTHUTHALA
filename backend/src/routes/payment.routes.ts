@@ -19,7 +19,7 @@ const sendWhatsAppNotification = async (name: string, quantity: number, amount: 
         url.searchParams.append('name', name);
         url.searchParams.append('quantity', quantity.toString());
         url.searchParams.append('amount', amount.toString());
-        url.searchParams.append('mobile', mobile);
+        url.searchParams.append('mobile', `91${mobile}`);
         url.searchParams.append('caption', 'Thanks!');
 
         const response = await fetch(url.toString());
