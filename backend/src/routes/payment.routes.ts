@@ -12,6 +12,28 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET || 'test_key_secret'
 });
 
+// Helper function to send WhatsApp notification asynchronously
+const sendWhatsAppNotification = async (name: string, quantity: number, amount: number, mobile: string) => {
+    try {
+        const url = new URL('https://wa-simple-otp.onrender.com/send-myl');
+        url.searchParams.append('name', name);
+        url.searchParams.append('quantity', quantity.toString());
+        url.searchParams.append('amount', amount.toString());
+        url.searchParams.append('mobile', mobile);
+        url.searchParams.append('caption', 'Thanks!');
+
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+            console.warn(`WhatsApp notification failed: ${response.status} ${response.statusText}`);
+        } else {
+            console.log(`WhatsApp notification sent successfully to ${mobile}`);
+        }
+    } catch (error) {
+        // Don't throw, just log - this should never affect the payment flow
+        console.warn('Failed to send WhatsApp notification:', error);
+    }
+};
+
 // Create Order (rate limited)
 router.post('/create-order', paymentLimiter, async (req, res) => {
     try {
@@ -85,6 +107,20 @@ router.post('/verify', paymentLimiter, async (req, res) => {
                 });
 
                 res.json({ status: 'success', payment });
+
+                // Send WhatsApp notification asynchronously after response is sent
+                // This runs in the background and won't affect the payment flow
+                setImmediate(() => {
+                    sendWhatsAppNotification(
+                        payment.name,
+                        payment.quantity,
+                        payment.amount,
+                        payment.mobile
+                    ).catch(err => {
+                        // Already handled in the function, but extra safety
+                        console.warn('WhatsApp notification error (async):', err);
+                    });
+                });
             } else {
                 res.status(404).json({ status: 'error', message: 'Payment record not found' });
             }
