@@ -9,6 +9,7 @@ export interface IPayment extends Document {
     paymentId: string;
     orderId: string;
     status: string;
+    webhookProcessed: boolean;
     createdAt: Date;
 }
 
@@ -21,7 +22,11 @@ const PaymentSchema: Schema = new Schema({
     paymentId: { type: String, required: true },
     orderId: { type: String, required: true },
     status: { type: String, default: 'success' },
+    webhookProcessed: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now }
 });
+
+// Create index on orderId for faster webhook lookups
+PaymentSchema.index({ orderId: 1 });
 
 export default mongoose.model<IPayment>('Payment', PaymentSchema);

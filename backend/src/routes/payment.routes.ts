@@ -156,6 +156,136 @@ router.post('/payment-failed', paymentLimiter, async (req, res) => {
     }
 });
 
+// Official Razorpay Webhook Endpoint
+// IMPORTANT: Configure this URL in Razorpay Dashboard under Settings > Webhooks
+// Add RAZORPAY_WEBHOOK_SECRET to your .env file
+router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    try {
+        // Step 1: Verify webhook signature
+        const signature = req.headers['x-razorpay-signature'] as string;
+        const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
+
+        if (!webhookSecret) {
+            console.error('RAZORPAY_WEBHOOK_SECRET not configured');
+            return res.status(500).json({ error: 'Webhook secret not configured' });
+        }
+
+        // Convert raw body to string for signature verification
+        const body = req.body.toString();
+
+        const expectedSignature = crypto
+            .createHmac('sha256', webhookSecret)
+            .update(body)
+            .digest('hex');
+
+        if (signature !== expectedSignature) {
+            console.warn('Invalid webhook signature received');
+            return res.status(400).json({ error: 'Invalid signature' });
+        }
+
+        // Parse the verified payload
+        const payload = JSON.parse(body);
+        const event = payload.event;
+        const paymentEntity = payload.payload?.payment?.entity;
+        const orderEntity = payload.payload?.order?.entity;
+
+        console.log(`Webhook received: ${event}`, {
+            orderId: paymentEntity?.order_id || orderEntity?.id,
+            paymentId: paymentEntity?.id
+        });
+
+        // Step 2: Handle different event types
+        if (event === 'payment.captured') {
+            const orderId = paymentEntity.order_id;
+            const paymentId = paymentEntity.id;
+
+            // Find payment record
+            const payment = await Payment.findOne({ orderId });
+
+            if (!payment) {
+                console.warn(`Payment record not found for order: ${orderId}`);
+                return res.status(200).json({ status: 'payment_not_found' });
+            }
+
+            // Step 3: Idempotency check
+            if (payment.webhookProcessed) {
+                console.log(`Webhook already processed for payment: ${paymentId}`);
+                return res.status(200).json({ status: 'already_processed' });
+            }
+
+            // Update payment status
+            payment.paymentId = paymentId;
+            payment.status = 'success';
+            payment.webhookProcessed = true;
+            await payment.save();
+
+            // Emit real-time update
+            io.emit('payment_success', {
+                amount: payment.amount,
+                ward: payment.ward,
+                quantity: payment.quantity,
+                payment
+            });
+
+            console.log(`Payment captured successfully: ${paymentId}`);
+
+            // Send WhatsApp notification asynchronously (non-blocking)
+            setImmediate(() => {
+                sendWhatsAppNotification(
+                    payment.name,
+                    payment.quantity,
+                    payment.amount,
+                    payment.mobile
+                ).catch(err => {
+                    console.warn('WhatsApp notification error (webhook):', err);
+                });
+            });
+
+            return res.status(200).json({ status: 'success' });
+
+        } else if (event === 'payment.failed') {
+            const orderId = paymentEntity.order_id;
+            const paymentId = paymentEntity.id;
+
+            const payment = await Payment.findOne({ orderId });
+
+            if (!payment) {
+                console.warn(`Payment record not found for order: ${orderId}`);
+                return res.status(200).json({ status: 'payment_not_found' });
+            }
+
+            // Check if already processed
+            if (payment.webhookProcessed && payment.status === 'failed') {
+                console.log(`Failed webhook already processed for payment: ${paymentId}`);
+                return res.status(200).json({ status: 'already_processed' });
+            }
+
+            // Update payment status
+            payment.paymentId = paymentId;
+            payment.status = 'failed';
+            payment.webhookProcessed = true;
+            await payment.save();
+
+            // Emit real-time update
+            io.emit('payment_failed', { payment });
+
+            console.log(`Payment failed: ${paymentId}`);
+
+            return res.status(200).json({ status: 'failed_recorded' });
+
+        } else {
+            // Log other events but don't process them
+            console.log(`Unhandled webhook event: ${event}`);
+            return res.status(200).json({ status: 'event_ignored' });
+        }
+
+    } catch (error) {
+        console.error('Webhook processing error:', error);
+        // Always return 200 to prevent Razorpay from retrying on our internal errors
+        return res.status(200).json({ error: 'internal_error' });
+    }
+});
+
 // Get Stats (rate limited to prevent scraping)
 router.get('/stats', statsLimiter, async (req, res) => {
     try {
