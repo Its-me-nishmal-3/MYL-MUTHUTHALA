@@ -14,7 +14,7 @@ const Footer = () => {
                             Empowering the community with quality products and services.
                         </p>
                         <div className="text-sm text-gray-600">
-                            <p>Email: dev.nishmal@gmail.com</p>
+                            <p>Email: Info@websioo.com</p>
                             <p>Phone: +91 8592887385</p>
                         </div>
                     </div>

@@ -14,13 +14,13 @@ const ContactUs = () => {
                     <div className="bg-gray-800 p-4 rounded-lg">
                         <h3 className="font-semibold text-emerald-400 mb-2">Address</h3>
                         <p>MYL MUTHUTHALA Committee</p>
-                        <p>Karimpuzha, Palakkad District</p>
+                        <p>Muthuthala, Palakkad District</p>
                         <p>Kerala, India</p>
                     </div>
 
                     <div className="bg-gray-800 p-4 rounded-lg">
                         <h3 className="font-semibold text-emerald-400 mb-2">Contact Details</h3>
-                        <p>Email: dev.nishmal@gmail.com</p>
+                        <p>Email: Info@websioo.com</p>
                         <p>Phone: +91 8592887385</p>
                     </div>
                 </div>
