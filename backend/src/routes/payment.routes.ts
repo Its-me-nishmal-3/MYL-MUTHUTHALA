@@ -20,7 +20,11 @@ const sendWhatsAppNotification = async (name: string, quantity: number, amount: 
         url.searchParams.append('quantity', quantity.toString());
         url.searchParams.append('amount', amount.toString());
         url.searchParams.append('mobile', `91${mobile}`);
-        url.searchParams.append('caption', 'Thanks!');
+        url.searchParams.append('caption', `മുസ്‌ലിം യൂത്ത് ലീഗ് മുതുതല പഞ്ചായത്ത്‌ കമ്മറ്റിയുടെ ഈത്തപ്പഴം ബിഗ് സെയിലിൽ താങ്കൾ പങ്കാളിയായതിന് നന്ദി.
+നാഥൻ സ്വീകരിക്കട്ടെ...
+
+        സ്നേഹത്തോടെ 
+മുസ്‌ലിം യൂത്ത് ലീഗ് മുതുതല പഞ്ചായത്ത്‌ കമ്മിറ്റി`);
 
         const response = await fetch(url.toString());
         if (!response.ok) {
