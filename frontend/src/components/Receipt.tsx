@@ -188,27 +188,29 @@ const Receipt: React.FC = () => {
                                 // Area 1: Name
                                 const nameX = 201;
                                 const nameY = 528 + ((583 - 528) / 2);
-                                ctx.font = 'bold 28px Arial, sans-serif';
+                                ctx.font = 'bold 35px Arial, sans-serif';
                                 ctx.textAlign = 'left';
                                 ctx.fillText(payment.name.toUpperCase(), nameX, nameY);
 
                                 // Area 2: Order/Quantity + 10px down
                                 const qtyX = 774; // Left edge
                                 const qtyY = 765 + ((802 - 765) / 2) + 10;
-                                ctx.font = 'bold 24px Arial, sans-serif';
+                                ctx.font = 'bold 30px Arial, sans-serif';
                                 ctx.textAlign = 'left';
                                 ctx.fillText(String(payment.quantity || 1), qtyX, qtyY);
 
                                 // Area 3: Amount + 10px down
                                 const amtX = 754; // Left edge
                                 const amtY = 821 + ((855 - 821) / 2) + 10;
+                                ctx.font = 'bold 30px Arial, sans-serif';
+                                ctx.textAlign = 'left';
                                 ctx.fillText(`₹${payment.amount || (payment.quantity * 350)}`, amtX, amtY);
 
                                 // Watermark
                                 const now = new Date();
                                 const watermark = `Generated on ${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
                                 ctx.font = 'italic 20px Arial, sans-serif';
-                                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                                 ctx.textAlign = 'center';
                                 ctx.fillText(watermark, canvas.width / 2, canvas.height - 30);
 
