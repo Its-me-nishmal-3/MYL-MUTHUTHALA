@@ -53,14 +53,14 @@ const NameWithPoster: React.FC = () => {
                 // Area 1: Name
                 const nameX = 201;
                 const nameY = 528 + ((583 - 528) / 2);
-                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.textAlign = 'left';
                 ctx.fillText(userName.toUpperCase(), nameX, nameY);
 
                 // Area 2: Quantity
                 const qtyX = 774;
                 const qtyY = 765 + ((802 - 765) / 2) + 10;
-                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.fillText(String(qty), qtyX, qtyY);
 
                 // Area 3: Amount
@@ -119,12 +119,13 @@ const NameWithPoster: React.FC = () => {
                 // Area 2: Quantity
                 const qtyX = 774;
                 const qtyY = 765 + ((802 - 765) / 2) + 10;
-                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.fillText(String(quantity), qtyX, qtyY);
 
                 // Area 3: Amount
                 const amtX = 754;
                 const amtY = 821 + ((855 - 821) / 2) + 10;
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.fillText(`₹${amount}`, amtX, amtY);
 
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);

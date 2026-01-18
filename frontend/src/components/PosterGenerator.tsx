@@ -194,12 +194,14 @@ const PosterGenerator: React.FC = () => {
 
                 // 3. Draw Name AFTER photo
                 drawName(ctx, scale);
+                drawWatermark(ctx, scale);
                 setIsCanvasReady(true);
             };
 
             img.onerror = (e) => {
                 console.error("Failed to load user image", e);
                 drawName(ctx, scale);
+                drawWatermark(ctx, scale);
                 setIsCanvasReady(true);
             };
 
@@ -207,6 +209,7 @@ const PosterGenerator: React.FC = () => {
         } else {
             // No user image, just draw name
             drawName(ctx, scale);
+            drawWatermark(ctx, scale);
             setIsCanvasReady(true);
         }
 
@@ -223,7 +226,7 @@ const PosterGenerator: React.FC = () => {
         ctx.save();
         // Scale font size as well.
         // Base size 80 seems appropriate for 2560px width.
-        const fontSize = Math.round(40 * scale);
+        const fontSize = Math.round(50 * scale);
         ctx.font = `bold ${fontSize}px Arial`;
         ctx.fillStyle = '#ffffffff';
         ctx.textAlign = 'start';
@@ -237,6 +240,22 @@ const PosterGenerator: React.FC = () => {
         const centerY = y + h / 2;
 
         ctx.fillText(text, centerX, centerY);
+        ctx.restore();
+    };
+
+    const drawWatermark = (ctx: CanvasRenderingContext2D, scale: number) => {
+        const now = new Date();
+        const watermark = `Generated on ${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+
+        ctx.save();
+        const fontSize = Math.round(20 * scale);
+        ctx.font = `italic ${fontSize}px Arial`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+
+        // Position: Bottom Center, with some padding
+        ctx.fillText(watermark, ctx.canvas.width / 2, ctx.canvas.height - (30 * scale));
         ctx.restore();
     };
 

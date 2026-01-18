@@ -46,21 +46,30 @@ const Receipt: React.FC = () => {
                 // Area 1: Name - coords (201,528,802,583)
                 const nameX = 201;
                 const nameY = 528 + ((583 - 528) / 2); // Center vertically
-                ctx.font = 'bold 28px Arial, sans-serif';
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.textAlign = 'left';
                 ctx.fillText(payment.name.toUpperCase(), nameX, nameY);
 
                 // Area 2: Order/Quantity - coords (774,765,1115,802) + 10px down
                 const qtyX = 774; // Left edge
                 const qtyY = 765 + ((802 - 765) / 2) + 10;  // Center vertically + 10px down
-                ctx.font = 'bold 24px Arial, sans-serif';
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.textAlign = 'left';
                 ctx.fillText(String(payment.quantity || 1), qtyX, qtyY);
 
                 // Area 3: Amount - coords (754,821,1112,855) + 10px down
                 const amtX = 754; // Left edge
                 const amtY = 821 + ((855 - 821) / 2) + 10;  // Center vertically + 10px down
+                ctx.font = 'bold 30px Arial, sans-serif';
                 ctx.fillText(`₹${payment.amount || (payment.quantity * 350)}`, amtX, amtY);
+
+                // Watermark
+                const now = new Date();
+                const watermark = `Generated on ${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+                ctx.font = 'italic 20px Arial, sans-serif';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                ctx.textAlign = 'center';
+                ctx.fillText(watermark, canvas.width / 2, canvas.height - 30);
 
                 // Trigger download
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
@@ -194,6 +203,14 @@ const Receipt: React.FC = () => {
                                 const amtX = 754; // Left edge
                                 const amtY = 821 + ((855 - 821) / 2) + 10;
                                 ctx.fillText(`₹${payment.amount || (payment.quantity * 350)}`, amtX, amtY);
+
+                                // Watermark
+                                const now = new Date();
+                                const watermark = `Generated on ${now.toLocaleDateString()} at ${now.toLocaleTimeString()}`;
+                                ctx.font = 'italic 20px Arial, sans-serif';
+                                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                                ctx.textAlign = 'center';
+                                ctx.fillText(watermark, canvas.width / 2, canvas.height - 30);
 
                                 const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
                                 const blob = await (await fetch(dataUrl)).blob();
