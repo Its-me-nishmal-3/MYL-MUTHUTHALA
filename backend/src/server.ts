@@ -20,10 +20,16 @@ app.set('trust proxy', 1);
 // Middleware
 app.use(cors());
 
-// IMPORTANT: Webhook route must come BEFORE express.json() to preserve raw body for signature verification
-app.use('/api/payment/webhook', express.raw({ type: 'application/json' }), paymentRoutes);
+// Conditional middleware: Use raw body parser ONLY for webhook endpoint, JSON parser for everything else
+app.use((req, res, next) => {
+    if (req.path === '/api/payment/webhook') {
+        express.raw({ type: 'application/json' })(req, res, next);
+    } else {
+        next();
+    }
+});
 
-// Now apply JSON parser for all other routes
+// Apply JSON parser for non-webhook routes
 app.use(express.json());
 
 // Apply general rate limiter to all routes
