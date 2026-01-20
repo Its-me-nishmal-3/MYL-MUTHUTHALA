@@ -291,6 +291,102 @@ router.post('/webhook', async (req, res) => {
     }
 });
 
+// TEST Webhook Endpoint (PURE SIMULATION - NO DATABASE/NOTIFICATIONS)
+// Use this endpoint to test webhook request format from Postman
+// POST to /api/payment/test-webhook with body:
+// {
+//   "event": "payment.captured" or "payment.failed",
+//   "orderId": "order_xxxxx",
+//   "paymentId": "pay_xxxxx"
+// }
+router.post('/test-webhook', paymentLimiter, async (req, res) => {
+    try {
+        const { event, orderId, paymentId } = req.body;
+
+        if (!event || !orderId) {
+            return res.status(400).json({
+                error: 'Missing required fields: event, orderId',
+                received: { event, orderId, paymentId }
+            });
+        }
+
+        console.log(`🧪 Test webhook received: ${event}`, { orderId, paymentId });
+
+        // Simulate webhook responses without touching database
+        if (event === 'payment.captured') {
+            const mockPayment = {
+                _id: 'mock_id_123',
+                orderId: orderId,
+                paymentId: paymentId || `test_pay_${Date.now()}`,
+                name: 'Test User',
+                ward: 'Test Ward',
+                amount: 350,
+                quantity: 1,
+                mobile: '1234567890',
+                status: 'success',
+                webhookProcessed: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            console.log(`✅ Mock payment captured: ${mockPayment.paymentId}`);
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Mock webhook processed (no actual database changes)',
+                payment: mockPayment,
+                actions_simulated: [
+                    'Database update (skipped)',
+                    'Socket.IO emission (skipped)',
+                    'WhatsApp notification (skipped)'
+                ]
+            });
+
+        } else if (event === 'payment.failed') {
+            const mockPayment = {
+                _id: 'mock_id_456',
+                orderId: orderId,
+                paymentId: paymentId || `test_pay_${Date.now()}`,
+                name: 'Test User',
+                ward: 'Test Ward',
+                amount: 350,
+                quantity: 1,
+                mobile: '1234567890',
+                status: 'failed',
+                webhookProcessed: true,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            console.log(`❌ Mock payment failed: ${mockPayment.paymentId}`);
+
+            return res.status(200).json({
+                status: 'failed_recorded',
+                message: 'Mock webhook processed (no actual database changes)',
+                payment: mockPayment,
+                actions_simulated: [
+                    'Database update (skipped)',
+                    'Socket.IO emission (skipped)'
+                ]
+            });
+
+        } else {
+            return res.status(400).json({
+                error: 'Unsupported event type',
+                supported_events: ['payment.captured', 'payment.failed'],
+                received: event
+            });
+        }
+
+    } catch (error) {
+        console.error('Test webhook processing error:', error);
+        return res.status(500).json({
+            error: 'internal_error',
+            message: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
 // Get Stats (rate limited to prevent scraping)
 router.get('/stats', statsLimiter, async (req, res) => {
     try {
