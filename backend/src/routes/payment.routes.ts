@@ -164,7 +164,7 @@ router.post('/payment-failed', paymentLimiter, async (req, res) => {
 // Official Razorpay Webhook Endpoint
 // IMPORTANT: Configure this URL in Razorpay Dashboard under Settings > Webhooks
 // Add RAZORPAY_WEBHOOK_SECRET to your .env file
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+router.post('/webhook', async (req, res) => {
     try {
         // Step 1: Verify webhook signature
         const signature = req.headers['x-razorpay-signature'] as string;
