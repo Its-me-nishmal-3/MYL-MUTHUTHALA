@@ -100,6 +100,7 @@ router.post('/verify', paymentLimiter, async (req, res) => {
             if (payment) {
                 payment.paymentId = razorpay_payment_id;
                 payment.status = 'success';
+                payment.webhookProcessed = true; // Prevent duplicate webhook processing
                 await payment.save();
 
                 // Emit Socket Update

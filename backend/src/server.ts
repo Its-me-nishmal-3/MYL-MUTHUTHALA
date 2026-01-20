@@ -6,6 +6,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { generalLimiter } from './middleware/rateLimiter';
+import paymentRoutes from './routes/payment.routes';
+import adminRoutes from './routes/admin.routes';
 
 dotenv.config();
 
@@ -17,6 +19,11 @@ app.set('trust proxy', 1);
 
 // Middleware
 app.use(cors());
+
+// IMPORTANT: Webhook route must come BEFORE express.json() to preserve raw body for signature verification
+app.use('/api/payment/webhook', express.raw({ type: 'application/json' }), paymentRoutes);
+
+// Now apply JSON parser for all other routes
 app.use(express.json());
 
 // Apply general rate limiter to all routes
@@ -44,10 +51,7 @@ mongoose.connect(MONGODB_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
-import paymentRoutes from './routes/payment.routes';
-import adminRoutes from './routes/admin.routes';
-
-// Routes
+// Routes (webhook route already registered above with raw body parser)
 app.use('/api/payment', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
