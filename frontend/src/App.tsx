@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
-import MaintenancePage from './components/MaintenancePage';
+// import MaintenancePage from './components/MaintenancePage';
 
 import Receipt from './components/Receipt';
 import History from './components/History';
@@ -21,7 +21,7 @@ import CancellationRefund from './components/policies/CancellationRefund';
 
 function App() {
   // MAINTENANCE MODE: Uncomment the line below to enable maintenance mode
-  return <MaintenancePage />;
+  // return <MaintenancePage />;
 
   return (
     <Router>
