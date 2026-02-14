@@ -1,4 +1,2 @@
-declare module 'jspdf-autotable' {
-    import { jsPDF } from 'jspdf';
-    export default function autoTable(doc: jsPDF, options: any): void;
-}
+// Types for external modules can be added here if needed.
+// xlsx includes its own type definitions.

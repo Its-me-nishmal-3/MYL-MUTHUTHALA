@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, LogOut, TrendingUp, Users, Package, DollarSign, Calendar, FileText, Filter } from 'lucide-react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
     LineChart, Line
@@ -53,29 +52,20 @@ const AdminDashboard: React.FC = () => {
         return matchesStatus && matchesDate;
     });
 
-    const handleExportPDF = () => {
-        const doc = new jsPDF();
-        doc.text('Payments Report', 14, 22);
-
-        const tableColumn = ["Date", "Name", "Mobile", "Unit", "Qty", "Amount", "Status", "Payment ID"];
-        const tableRows = filteredPayments.map(p => [
-            new Date(p.createdAt).toLocaleDateString(),
-            p.name,
-            p.mobile,
-            p.ward,
-            p.quantity,
-            `Rs. ${p.amount}`,
-            p.status,
-            p.paymentId
-        ]);
-
-        autoTable(doc, {
-            head: [tableColumn],
-            body: tableRows,
-            startY: 30,
-        });
-
-        doc.save('payments_report.pdf');
+    const handleExportExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(filteredPayments.map(p => ({
+            Date: new Date(p.createdAt).toLocaleDateString(),
+            Name: p.name,
+            Mobile: p.mobile,
+            Unit: p.ward,
+            Qty: p.quantity,
+            Amount: p.amount,
+            Status: p.status,
+            PaymentID: p.paymentId
+        })));
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Payments");
+        XLSX.writeFile(workbook, "payments_report.xlsx");
     };
 
     const fetchPayments = async () => {
@@ -338,10 +328,10 @@ const AdminDashboard: React.FC = () => {
                             </div>
 
                             <button
-                                onClick={handleExportPDF}
+                                onClick={handleExportExcel}
                                 className="glass-button bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center gap-2 text-white font-medium py-2 px-4 rounded-lg transition-all"
                             >
-                                <FileText size={18} /> Export PDF
+                                <FileText size={18} /> Export Excel
                             </button>
                         </div>
                     </div>
