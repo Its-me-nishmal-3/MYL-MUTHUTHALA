@@ -1,7 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, LogOut, TrendingUp, Users, Package, DollarSign } from 'lucide-react';
+import { Search, LogOut, TrendingUp, Users, Package, DollarSign, Calendar, FileText, Filter } from 'lucide-react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
     LineChart, Line
@@ -39,7 +41,42 @@ const AdminDashboard: React.FC = () => {
     const [analytics, setAnalytics] = useState<Analytics | null>(null);
     const [search, setSearch] = useState('');
     const [wardFilter, setWardFilter] = useState('All');
+    const [statusFilter, setStatusFilter] = useState('All');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const navigate = useNavigate();
+
+    const filteredPayments = payments.filter(p => {
+        const matchesStatus = statusFilter === 'All' || p.status === statusFilter;
+        const matchesDate = (!startDate || new Date(p.createdAt) >= new Date(startDate)) &&
+            (!endDate || new Date(p.createdAt) <= new Date(endDate));
+        return matchesStatus && matchesDate;
+    });
+
+    const handleExportPDF = () => {
+        const doc = new jsPDF();
+        doc.text('Payments Report', 14, 22);
+
+        const tableColumn = ["Date", "Name", "Mobile", "Unit", "Qty", "Amount", "Status", "Payment ID"];
+        const tableRows = filteredPayments.map(p => [
+            new Date(p.createdAt).toLocaleDateString(),
+            p.name,
+            p.mobile,
+            p.ward,
+            p.quantity,
+            `Rs. ${p.amount}`,
+            p.status,
+            p.paymentId
+        ]);
+
+        (doc as any).autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 30,
+        });
+
+        doc.save('payments_report.pdf');
+    };
 
     const fetchPayments = async () => {
         const token = localStorage.getItem('adminToken');
@@ -236,31 +273,77 @@ const AdminDashboard: React.FC = () => {
             {activeTab === 'payments' && (
                 <div className="animate-in fade-in zoom-in duration-300">
                     {/* Filters */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                                type="text"
-                                placeholder="Search Name, Mobile, or Payment ID"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                className="glass-input w-full pl-10"
-                            />
+                    <div className="flex flex-col gap-4 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                <input
+                                    type="text"
+                                    placeholder="Search Name, Mobile, or Payment ID"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className="glass-input w-full pl-10"
+                                />
+                            </div>
+
+                            <select
+                                value={wardFilter}
+                                onChange={(e) => setWardFilter(e.target.value)}
+                                className="glass-input w-full bg-[#1e293b] text-white"
+                            >
+                                <option value="All" className="bg-[#1e293b] text-white">All Units</option>
+                                {[
+                                    'Vadakkumuri', 'Karakkuth', 'Muthuthala', 'Parakkad', 'Kozhikkottiri',
+                                    'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
+                                ].map((ward, i) => (
+                                    <option key={i} value={ward} className="bg-[#1e293b] text-white">{ward}</option>
+                                ))}
+                            </select>
                         </div>
 
-                        <select
-                            value={wardFilter}
-                            onChange={(e) => setWardFilter(e.target.value)}
-                            className="glass-input w-full bg-[#1e293b] text-white"
-                        >
-                            <option value="All" className="bg-[#1e293b] text-white">All Units</option>
-                            {[
-                                'Vadakkumuri', 'Karakkuth', 'Muthuthala', 'Parakkad', 'Kozhikkottiri',
-                                'Perumudiyur', 'Yaram', 'Kodumunda', 'Thottinkara', 'Other'
-                            ].map((ward, i) => (
-                                <option key={i} value={ward} className="bg-[#1e293b] text-white">{ward}</option>
-                            ))}
-                        </select>
+                        {/* Advanced Filters & Export */}
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div className="relative">
+                                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStatusFilter(e.target.value)}
+                                    className="glass-input w-full bg-[#1e293b] text-white pl-10"
+                                >
+                                    <option value="All">All Status</option>
+                                    <option value="success">Success</option>
+                                    <option value="failed">Failed</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+
+                            <div className="relative">
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <input
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
+                                    className="glass-input w-full bg-[#1e293b] text-white pl-10"
+                                />
+                            </div>
+
+                            <div className="relative">
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                                <input
+                                    type="date"
+                                    value={endDate}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
+                                    className="glass-input w-full bg-[#1e293b] text-white pl-10"
+                                />
+                            </div>
+
+                            <button
+                                onClick={handleExportPDF}
+                                className="glass-button bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center gap-2 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                            >
+                                <FileText size={18} /> Export PDF
+                            </button>
+                        </div>
                     </div>
 
                     {/* Table */}
@@ -280,12 +363,12 @@ const AdminDashboard: React.FC = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5">
-                                    {payments.length === 0 ? (
+                                    {filteredPayments.length === 0 ? (
                                         <tr>
-                                            <td colSpan={7} className="p-8 text-center text-gray-500">No payments found</td>
+                                            <td colSpan={8} className="p-8 text-center text-gray-500">No payments found</td>
                                         </tr>
                                     ) : (
-                                        payments.map((p) => (
+                                        filteredPayments.map((p) => (
                                             <tr key={p._id} className="hover:bg-white/5 transition-colors">
                                                 <td className="p-4 text-sm text-gray-300">{new Date(p.createdAt).toLocaleDateString()}</td>
                                                 <td className="p-4 font-semibold">{p.name}</td>
