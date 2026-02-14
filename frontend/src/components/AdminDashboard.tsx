@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, LogOut, TrendingUp, Users, Package, DollarSign, Calendar, FileText, Filter } from 'lucide-react';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
     LineChart, Line
@@ -69,7 +69,7 @@ const AdminDashboard: React.FC = () => {
             p.paymentId
         ]);
 
-        (doc as any).autoTable({
+        autoTable(doc, {
             head: [tableColumn],
             body: tableRows,
             startY: 30,

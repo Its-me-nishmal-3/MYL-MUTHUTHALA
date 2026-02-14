@@ -1,6 +1,4 @@
-declare module 'jspdf-autotable';
-declare module 'jspdf' {
-    interface jsPDF {
-        autoTable: (options: any) => jsPDF;
-    }
+declare module 'jspdf-autotable' {
+    import { jsPDF } from 'jspdf';
+    export default function autoTable(doc: jsPDF, options: any): void;
 }
