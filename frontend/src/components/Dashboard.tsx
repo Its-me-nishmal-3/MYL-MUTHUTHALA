@@ -23,6 +23,8 @@ const UNIT_NAMES = [
 
 const BANNERS = [banner5, banner6, banner1, banner2, banner3, banner4];
 
+const CLOSING_TIME = new Date('2026-02-16T22:00:00+05:30').getTime();
+
 interface Stats {
     totalAmount: number;
     totalCount: number;
@@ -41,6 +43,7 @@ const Dashboard: React.FC = () => {
         const saved = localStorage.getItem('welcomeExpanded');
         return saved !== null ? JSON.parse(saved) : true;
     });
+    const [isClosed, setIsClosed] = useState(Date.now() >= CLOSING_TIME);
 
     const toggleWelcome = () => {
         const newValue = !isWelcomeExpanded;
@@ -66,8 +69,16 @@ const Dashboard: React.FC = () => {
             console.log('Payment success event:', data);
             fetchStats();
         });
+
+        const timer = setInterval(() => {
+            if (Date.now() >= CLOSING_TIME) {
+                setIsClosed(true);
+            }
+        }, 60000); // Check every minute
+
         return () => {
             newSocket.disconnect();
+            clearInterval(timer);
         };
     }, []);
 
@@ -362,10 +373,16 @@ const Dashboard: React.FC = () => {
                     <motion.button
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowModal(true)}
+                        onClick={() => {
+                            if (isClosed) {
+                                alert('now closed or ended');
+                            } else {
+                                setShowModal(true);
+                            }
+                        }}
                         className="pointer-events-auto bg-gradient-to-r from-teal-600 to-green-600 text-white font-bold text-lg md:text-xl py-4 px-12 rounded-full shadow-2xl shadow-teal-500/40 hover:shadow-teal-500/60 border border-teal-400/30 backdrop-blur-sm flex items-center gap-2"
                     >
-                        Participate
+                        {isClosed ? 'Thanks' : 'Participate'}
                     </motion.button>
                 </div>
 
